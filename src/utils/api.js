@@ -118,17 +118,16 @@ export const getDoctorById = async (doctorId) => {
 // ---------------------- chatbot ---------------------- //
 
 //gpt prediction
-export const gptPrediction = async (symptoms) => {
+export const diseasePrediction = async (requestBody) => {
   try {
-    const response = await axios.post(`${API_URL}/api/gpt-prediction`, {
-      symptoms,
-    });
+    const response = await axios.post(`${API_URL}/api/disease-prediction`, requestBody);
     return response.data;
   } catch (error) {
-    console.error("Error during GPT prediction:", error);
+    console.error("Error during disease prediction:", error);
     return null;
   }
 };
+
 
 // chatbot message
 export const chatbotMessage = async (text) => {
@@ -480,5 +479,118 @@ export const downloadMedicalFile = async (userId, fileId, filename) => {
     link.click();
   } catch (error) {
     console.error("Error downloading medical file:", error);
+  }
+};
+
+// ---------------------- prescriptions ---------------------- //
+
+// add prescription
+export const addPrescription = async (prescription) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/api/prescriptions`,
+      prescription
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error during adding prescription:", error);
+    return null;
+  }
+};
+
+// get prescriptions
+export const getPrescriptions = async (doctor_id) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/api/prescriptions/${doctor_id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error during getting prescriptions:", error);
+    return null;
+  }
+};
+
+// Download prescription
+export const downloadPrescription = async (prescription_id) => {
+  try {
+    const response = await axios.get(
+      `${API_URL}/api/download_prescription/${prescription_id}`, 
+      { responseType: 'blob' }  // responseType is important here, it tells axios to return binary data
+    );
+
+    // Create a blob URL from the binary data and initiate a download
+    const url = window.URL.createObjectURL(new Blob([response.data]));
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `prescription_${prescription_id}.pdf`);
+    document.body.appendChild(link);
+    link.click();
+
+  } catch (error) {
+    console.error("Error during prescription download:", error);
+    return null;
+  }
+};
+
+
+
+// ---------------------- disease prediction ---------------------- //
+
+export const predictCancer = async (data) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/predict_cancer`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error during cancer prediction:", error);
+    return null;
+  }
+};
+
+export const predictDiabetes = async (data) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/predict_diabetes`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error during diabetes prediction:", error);
+    return null;
+  }
+};
+
+export const predictHeartDisease = async (data) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/predict_heart`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error during heart disease prediction:", error);
+    return null;
+  }
+};
+
+export const predictLiverDisease = async (data) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/predict_liver`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error during liver disease prediction:", error);
+    return null;
+  }
+};
+
+// ---------------------- OCR report extraction ---------------------- //
+
+export const uploadReport = async (userId, file) => {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await axios.post(`${API_URL}/api/uploadfile/${userId}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error during report upload:", error);
+    return null;
   }
 };

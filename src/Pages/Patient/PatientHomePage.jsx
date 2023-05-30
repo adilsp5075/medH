@@ -6,6 +6,8 @@ import {
   ScheduleOutlined,
   FileOutlined,
   BellOutlined,
+  SolutionOutlined,
+  FileImageOutlined
 } from "@ant-design/icons";
 import { logout_user, getNotificationCountByUser } from "../../utils/api"; // Import the API function
 import { useNavigate } from "react-router-dom";
@@ -83,6 +85,14 @@ const PatientHomePage = () => {
 
   console.log("notificationCount:", notificationCount); // Debugging statement
 
+  const handlelifestyledisease = ()=>{
+    navigate("/life-style")
+  }
+
+  const handleimageprocessing = ()=>{
+    navigate("/image-processing")
+  }
+
 
   return (
     <div style={{ padding: "2rem" }}>
@@ -149,6 +159,24 @@ const PatientHomePage = () => {
             onClick={handleUploadMedicalRecords}
           >
             Medical Records
+          </Button>
+        </Col>
+        <Col span={24}>
+          <Button
+            type="primary"
+            icon={<SolutionOutlined />}
+            onClick={handlelifestyledisease}
+          >
+            Life Style Disease Prediction
+          </Button>
+        </Col>
+        <Col span={24}>
+          <Button
+            type="primary"
+            icon={<FileImageOutlined />}
+            onClick={handleimageprocessing}
+          >
+            Image Processing
           </Button>
         </Col>
         <Col span={24}>
